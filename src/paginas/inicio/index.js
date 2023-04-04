@@ -1,8 +1,7 @@
 import React from 'react'
-
 import styles from './Inicio.module.css'
 import posts from 'json/posts.json'
-import Post from 'componentes/Post'
+import PostCard from 'componentes/PostCard'
 
 
 const Inicio = () => {
@@ -12,7 +11,7 @@ const Inicio = () => {
       <ul className={styles.posts}>
           {posts.map((post) => (
              <li key={post.id}>
-                <Post post={post} />
+                <PostCard post={post} />
              </li> 
           ))}
       </ul>
