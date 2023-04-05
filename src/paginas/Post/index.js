@@ -1,9 +1,12 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Route, Routes, useParams } from 'react-router-dom'
 import posts from "json/posts.json"
 import PostModelo from 'componentes/PostModelo';
 import ReactMarkdown from 'react-markdown';
-import './Post.css'
+import styles from './Post.module.css'
+import NaoEncontrada from 'paginas/NaoEncontrada';
+import PaginaPadrao from 'componentes/PaginaPadrao';
+import PostCard from 'componentes/PostCard';
 
 const Post = () => {
     const parametros = useParams();
@@ -16,23 +19,38 @@ const Post = () => {
 
     if (!post) {
         return (
-            <h1>Post não encontrado</h1>
+            <NaoEncontrada />
         )
     }    
 
-    return (
-        <PostModelo
-        fotoCapa={`/assets/posts/${post.id}/capa.png`}
-        titulo={`${post.titulo}`} 
-        >
-        <div className="post-markdown-container">
-            <ReactMarkdown>
-                {post.texto}
-            </ReactMarkdown>
-        </div>   
+    return ( 
+        <Routes>
+            <Route path='*' element={<PaginaPadrao/>}>
+                <Route index element= {
+                    <PostModelo
+                    fotoCapa={`/assets/posts/${post.id}/capa.png`}
+                    titulo={`${post.titulo}`} 
+                    >
+                    <div className={styles.postMarkdownContainer}>
+                        <ReactMarkdown>
+                            {post.texto}
+                        </ReactMarkdown>
+                    </div> 
 
-        
-        </PostModelo>
+            <ul className={styles.posts}>     
+                  
+                {posts.map((post) => (
+                    <li key={post.id}>
+                        <PostCard post={post} />
+                    </li> 
+                ))}
+            </ul>  
+                    </PostModelo>
+                }>
+                </Route>
+            </Route>  
+        </Routes>
+       
   )
 }
 
